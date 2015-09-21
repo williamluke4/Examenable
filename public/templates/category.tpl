@@ -204,7 +204,7 @@
 		[[category:no_topics]]
 	</div>
 	<!-- ENDIF !topics.length -->
-	<!-- ENFIF !children.length -->
+	<!-- ENDIF !children.length -->
 
 <ul component="category" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}">
 	<meta itemprop="itemListOrder" content="descending">
