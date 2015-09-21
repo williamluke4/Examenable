@@ -62,7 +62,7 @@ var async = require('async'),
 				});
 			},
 			function(subject, code, next) {
-				var reset_link = nconf.get('url') + '/reset/' + code;
+				var reset_link = 'http://examenable.com/reset/' + code;
 				emailer.send('reset', uid, {
 					site_title: (meta.config.title || 'NodeBB'),
 					reset_link: reset_link,

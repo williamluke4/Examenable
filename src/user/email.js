@@ -30,7 +30,7 @@ var async = require('async'),
 	UserEmail.sendValidationEmail = function(uid, email, callback) {
 		callback = callback || function() {};
 		var confirm_code = utils.generateUUID(),
-			confirm_link = nconf.get('url') + '/confirm/' + confirm_code;
+			confirm_link = 'http://examenable.com/confirm/' + confirm_code;
 
 		var emailInterval = 10;
 
