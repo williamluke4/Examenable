@@ -198,12 +198,13 @@
 	<hr />
 
 	<p>{name}</p>
-
+	<!-- IF !children.length -->
 	<!-- IF !topics.length -->
 	<div class="alert alert-warning" id="category-no-topics">
 		[[category:no_topics]]
 	</div>
 	<!-- ENDIF !topics.length -->
+	<!-- ENFIF !children.length -->
 
 <ul component="category" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}">
 	<meta itemprop="itemListOrder" content="descending">
