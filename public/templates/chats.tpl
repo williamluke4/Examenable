@@ -17,14 +17,13 @@
 <!-- BEGIN messages -->
 				<li class="chat-message clear" data-uid="{messages.fromuid}" data-self="{messages.self}" data-break="{messages.newSet}">
 					<div class="message-header">
-						<span class="chat-timestamp pull-right timeago" title="{messages.timestampISO}"></span>
-						<a href="{config.relative_path}/user/{messages.fromUser.userslug}"><img class="chat-user-image" src="{messages.fromUser.picture}"></a>
+						<a href="{config.relative_path}/user/{messages.fromUser.userslug}"><img class="chat-user-image img-circle" src="{messages.fromUser.picture}"></a>
 						<strong><span class="chat-user">{messages.fromUser.username}</span></strong>
+						<span class="chat-timestamp timeago" title="{messages.timestampISO}"></span>
 					</div>
 					<div class="message-body">{messages.content}</div>
 				</li>
 <!-- END messages -->
-					<span class="user-typing pull-right hide"><i class="fa fa-pencil"></i> [[modules:chat.user_typing, {meta.username}]]</span>
 				</ul>
 				<div class="input-group">
 					<textarea component="chat/input" placeholder="[[modules:chat.placeholder]]" class="form-control chat-input" rows="1"></textarea>

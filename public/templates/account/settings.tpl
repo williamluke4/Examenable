@@ -36,7 +36,7 @@
 <div class="account">
 	<div class="row">
 		<div class="col-xs-12">
-			<!-- IF disableCustomUserSkins -->
+			<!-- IF !disableCustomUserSkins -->
 			<h4>[[user:select-skin]]</h4>
 			<div class="well">
 				<select class="form-control" id="bootswatchSkin" data-property="bootswatchSkin">
@@ -45,7 +45,7 @@
 					<!-- END bootswatchSkinOptions -->
 				</select>
 			</div>
-			<!-- ENDIF disableCustomUserSkins -->
+			<!-- ENDIF !disableCustomUserSkins -->
 
 			<h4>[[user:browsing]]</h4>
 			<div class="well">

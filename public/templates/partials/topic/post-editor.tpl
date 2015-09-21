@@ -1,1 +1,1 @@
-<span component="post/editor" class="<!-- IF !editor.username --> hidden<!-- ENDIF !editor.username -->">, [[global:last_edited_by_ago, <strong><a href="{config.relative_path}/user/{editor.userslug}">{editor.username}</a></strong>, <span class="timeago" title="{relativeEditTime}"></span>]]</span>
+<small data-editor="{editor.userslug}" component="post/editor" class="hidden">[[global:last_edited_by_ago, <strong>{editor.username}</strong>, <span class="timeago" title="{relativeEditTime}"></span>]]</small>

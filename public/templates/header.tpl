@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="{function.localeToHTML, defaultLang}">
 <head>
 	<title>{browserTitle}</title>
 	<!-- BEGIN metaTags -->
 	{function.buildMetaTag}
 	<!-- END metaTags -->
-	<link rel="stylesheet" type="text/css" href="{relative_path}/stylesheet.css?{config.css-buster}" />
+	<link rel="stylesheet" type="text/css" href="{relative_path}/stylesheet.css?{css-buster}" />
+	<!-- IF bootswatchCSS --><link id="bootswatchCSS" href="{bootswatchCSS}" rel="stylesheet" media="screen"><!-- ENDIF bootswatchCSS -->
 	<!-- BEGIN linkTags -->
 	<link<!-- IF linkTags.link --> link="{linkTags.link}"<!-- ENDIF linkTags.link --><!-- IF linkTags.rel --> rel="{linkTags.rel}"<!-- ENDIF linkTags.rel --><!-- IF linkTags.type --> type="{linkTags.type}"<!-- ENDIF linkTags.type --><!-- IF linkTags.href --> href="{linkTags.href}"<!-- ENDIF linkTags.href --> />
 	<!-- END linkTags -->
 
 	<!--[if lt IE 9]>
   		<script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.3.0/es5-shim.min.js"></script>
-  		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-  		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+  		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+  		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   		<script>__lt_ie_9__ = 1;</script>
 	<![endif]-->
 
@@ -25,7 +26,7 @@
 			user: JSON.parse('{{userJSON}}')
 		};
 	</script>
-	<script src="{relative_path}/nodebb.min.js?{config.script-buster}"></script>
+	<script src="{relative_path}/nodebb.min.js?{script-buster}"></script>
 <script>
 	require.config({
 		baseUrl: "{relative_path}/src/modules",
@@ -38,122 +39,89 @@
 		}
 	});
 </script>
-
+	
 	<!-- IF useCustomJS -->
 	{{customJS}}
 	<!-- ENDIF useCustomJS -->
 	<!-- IF useCustomCSS -->
 	<style type="text/css">{{customCSS}}</style>
 	<!-- ENDIF useCustomCSS -->
-
 </head>
 
 <body>
-	<div class="navbar navbar-default navbar-fixed-top header" role="navigation" id="header-menu" component="navbar">
-		<div class="loading-bar"></div>
-		<div class="container">
+	<nav id="menu">
+		<section class="menu-profile">
+			<img src="{user.picture}"/>
+			<i component="user/status" class="fa fa-fw fa-circle status {user.status}"></i></span>
+		</section>
+
+		<section class="menu-section" data-section="navigation">
+			<h3 class="menu-section-title">[[global:header.navigation]]</h3>
+			<ul class="menu-section-list"></ul>
+		</section>
+
+		<!-- IF loggedIn -->
+		<section class="menu-section" data-section="profile">
+			<h3 class="menu-section-title">[[global:header.profile]]</h3>
+			<ul class="menu-section-list" component="header/usercontrol"></ul>
+		</section>
+
+		<section class="menu-section" data-section="notifications">
+			<h3 class="menu-section-title">
+				[[global:header.notifications]]
+				<span class="counter" component="notifications/icon" data-content="0"></span>
+			</h3>
+			<ul class="menu-section-list"></ul>
+		</section>
+
+		<section class="menu-section" data-section="chats">
+			<h3 class="menu-section-title">
+				[[global:header.chats]]
+				<i class="counter" component="chat/icon" data-content="0"></i>
+			</h3>
+			<ul class="menu-section-list chat-list"></ul>
+		</section>
+		<!-- ENDIF loggedIn -->
+	</nav>
+
+	<main id="panel">
+		<nav class="navbar navbar-default navbar-fixed-top header" role="navigation" id="header-menu" component="navbar">
+			<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<button type="button" class="navbar-toggle" id="mobile-menu">
+					<span component="notifications/icon" class="notification-icon fa fa-fw fa-bell-o" data-content="0"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<div>
-					<a href="<!-- IF brand:logo:url -->{brand:logo:url}<!-- ELSE -->{relative_path}/<!-- ENDIF brand:logo:url -->">
-						<img alt="{brand:logo:alt}" class="{brand:logo:display} forum-logo" src="{brand:logo}" />
-					</a>
-					<!-- IF showSiteTitle -->
-					<a href="{relative_path}/">
-						<h1 class="navbar-brand forum-title">{title}</h1>
-					</a>
-					<!-- ENDIF showSiteTitle -->
 
-					<div component="navbar/title" class="visible-xs">
-						<span></span>
-					</div>
+				<a href="<!-- IF brand:logo:url -->{brand:logo:url}<!-- ELSE -->{relative_path}/<!-- ENDIF brand:logo:url -->">
+					<img alt="{brand:logo:alt}" class="{brand:logo:display} forum-logo" src="{brand:logo}" />
+				</a>
+				<!-- IF showSiteTitle -->
+				<a href="{relative_path}/">
+					<h1 class="navbar-brand forum-title">{title}</h1>
+				</a>
+				<!-- ENDIF showSiteTitle -->
+
+				<div component="navbar/title" class="visible-xs">
+					<span></span>
 				</div>
 			</div>
 
-			<div class="navbar-collapse collapse navbar-ex1-collapse" id="nav-dropdown">
+			<div id="nav-dropdown" class="hidden-xs">
 				<!-- IF !maintenanceHeader -->
-				<ul id="main-nav" class="nav navbar-nav pull-left">
-					<!-- BEGIN navigation -->
-					<!-- IF function.displayMenuItem, @index -->
-					<li class="{navigation.class}">
-						<a href="{relative_path}{navigation.route}" title="{navigation.title}" id="{navigation.id}"<!-- IF navigation.properties.targetBlank --> target="_blank"<!-- ENDIF navigation.properties.targetBlank -->>
-							<!-- IF navigation.iconClass -->
-							<i class="fa fa-fw {navigation.iconClass}"></i>
-							<!-- ENDIF navigation.iconClass -->
-
-							<!-- IF navigation.text -->
-							<span class="{navigation.textClass}">{navigation.text}</span>
-							<!-- ENDIF navigation.text -->
-						</a>
-					</li>
-					<!-- ENDIF function.displayMenuItem -->
-					<!-- END navigation -->
-				</ul>
-
 				<!-- IF loggedIn -->
-				<ul id="logged-in-menu" class="nav navbar-nav navbar-right pull-right">
-					<li class="notifications dropdown text-center hidden-xs">
-						<a href="#" title="[[global:header.notifications]]" class="dropdown-toggle" data-toggle="dropdown" id="notif_dropdown">
-							<i component="notifications/icon" class="notification-icon fa fa-fw fa-bell-o" data-content="0"></i>
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="notif_dropdown">
-							<li>
-								<ul id="notif-list">
-									<li>
-										<a href="#"><i class="fa fa-refresh fa-spin"></i> [[global:notifications.loading]]</a>
-									</li>
-								</ul>
-							</li>
-							<li class="notif-dropdown-link"><a href="#" class="mark-all-read">[[notifications:mark_all_read]]</a></li>
-							<li class="notif-dropdown-link"><a href="{relative_path}/notifications">[[notifications:see_all]]</a></li>
-						</ul>
-					</li>
 
-					<!-- IF searchEnabled -->
-					<li class="visible-xs">
-						<a href="{relative_path}/search">
-							<i class="fa fa-search fa-fw"></i> [[global:search]]
-						</a>
-					</li>
-					<!-- ENDIF searchEnabled -->
-
-					<li class="visible-xs">
-						<a href="{relative_path}/notifications" title="[[notifications:title]]">
-							<i component="notifications/icon" class="notification-icon fa fa-bell-o fa-fw" data-content="0"></i> [[notifications:title]]
-						</a>
-					</li>
-
-
-					<!-- IF !disableChat -->
-					<li class="chats dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="[[global:header.chats]]" id="chat_dropdown">
-							<i component="chat/icon" class="fa fa-comment-o fa-fw"></i> <span class="visible-xs-inline">[[global:header.chats]]</span>
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="chat_dropdown">
-							<li>
-								<ul id="chat-list">
-									<li>
-										<a href="#"><i class="fa fa-refresh fa-spin"></i> [[global:chats.loading]]</a>
-									</li>
-								</ul>
-							</li>
-							<li class="notif-dropdown-link"><a href="{relative_path}/chats">[[modules:chat.see_all]]</a></li>
-						</ul>
-					</li>
-					<!-- ENDIF !disableChat -->
-
+				<ul id="logged-in-menu" class="nav navbar-nav navbar-right">
 					<li id="user_label" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="user_dropdown" title="[[global:header.profile]]">
-							<img component="header/userpicture" src="{user.picture}"/>
+							<img component="header/userpicture" src="{user.picture}" alt="{user.username}" /> <span id="user-header-name" class="visible-xs-inline">{user.username}</span>
 						</a>
-						<ul component="header/usercontrol" id="user-control-list" class="dropdown-menu" aria-labelledby="user_dropdown">
+						<ul id="user-control-list" component="header/usercontrol" class="dropdown-menu" aria-labelledby="user_dropdown">
 							<li>
 								<a component="header/profilelink" href="{relative_path}/user/{user.userslug}">
-									<i class="fa fa-fw fa-circle status {user.status}"></i> <span component="header/username">{user.username}</span>
+									<i component="user/status" class="fa fa-fw fa-circle status {user.status}"></i> <span component="header/username">{user.username}</span>
 								</a>
 							</li>
 							<li role="presentation" class="divider"></li>
@@ -184,8 +152,44 @@
 						</ul>
 					</li>
 				</ul>
+				<ul id="logged-in-menu" class="nav navbar-nav navbar-right">
+					<li class="notifications dropdown text-center hidden-xs">
+						<a href="#" title="[[global:header.notifications]]" class="dropdown-toggle" data-toggle="dropdown" id="notif_dropdown">
+							<i component="notifications/icon" class="fa fa-fw fa-bell-o" data-content="0"></i>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="notif_dropdown">
+							<li>
+								<ul id="notif-list">
+									<li>
+										<a href="#"><i class="fa fa-refresh fa-spin"></i> [[global:notifications.loading]]</a>
+									</li>
+								</ul>
+							</li>
+							<li class="notif-dropdown-link"><a href="#" class="mark-all-read">[[notifications:mark_all_read]]</a></li>
+							<li class="notif-dropdown-link"><a href="{relative_path}/notifications">[[notifications:see_all]]</a></li>
+						</ul>
+					</li>
+
+					<!-- IF !disableChat -->
+					<li class="chats dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="[[global:header.chats]]" id="chat_dropdown" component="chat/dropdown">
+							<i component="chat/icon" class="fa fa-comment-o fa-fw"></i> <span class="visible-xs-inline">[[global:header.chats]]</span>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="chat_dropdown">
+							<li>
+								<ul component="chat/list" class="chat-list">
+									<li>
+										<a href="#"><i class="fa fa-refresh fa-spin"></i> [[global:chats.loading]]</a>
+									</li>
+								</ul>
+							</li>
+							<li class="notif-dropdown-link"><a href="{relative_path}/chats">[[modules:chat.see_all]]</a></li>
+						</ul>
+					</li>
+					<!-- ENDIF !disableChat -->
+				</ul>
 				<!-- ELSE -->
-				<ul id="logged-out-menu" class="nav navbar-nav navbar-right pull-right">
+				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
 					<!-- IF allowRegistration -->
 					<li>
 						<a href="{relative_path}/register">
@@ -215,10 +219,15 @@
 							<button id="search-button" type="button" class="btn btn-link"><i class="fa fa-search fa-fw" title="[[global:header.search]]"></i></button>
 						</form>
 					</li>
+					<li class="visible-xs">
+						<a href="{relative_path}/search">
+							<i class="fa fa-search fa-fw"></i> [[global:search]]
+						</a>
+					</li>
 				</ul>
 				<!-- ENDIF searchEnabled -->
 
-				<ul class="nav navbar-nav navbar-right pull-right">
+				<ul class="nav navbar-nav navbar-right hidden-xs">
 					<li>
 						<a href="#" id="reconnect" class="hide" title="Connection to {title} has been lost, attempting to reconnect...">
 							<i class="fa fa-check"></i>
@@ -248,11 +257,26 @@
 					</li>
 				</ul>
 
-				<div class="header-topic-title hidden-xs">
-					<span></span>
-				</div>
+				<ul id="main-nav" class="nav navbar-nav">
+					<!-- BEGIN navigation -->
+					<!-- IF function.displayMenuItem, @index -->
+					<li class="{navigation.class}">
+						<a href="{relative_path}{navigation.route}" title="{navigation.title}" id="{navigation.id}"<!-- IF navigation.properties.targetBlank --> target="_blank"<!-- ENDIF navigation.properties.targetBlank -->>
+							<!-- IF navigation.iconClass -->
+							<i class="fa fa-fw {navigation.iconClass}"></i>
+							<!-- ENDIF navigation.iconClass -->
+
+							<!-- IF navigation.text -->
+							<span class="{navigation.textClass}">{navigation.text}</span>
+							<!-- ENDIF navigation.text -->
+						</a>
+					</li>
+					<!-- ENDIF function.displayMenuItem -->
+					<!-- END navigation -->
+				</ul>
+
 				<!-- ELSE -->
-				<ul class="nav navbar-nav navbar-right pull-right">
+				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a href="{relative_path}/login">
 							<i class="fa fa-sign-in visible-xs-inline"></i>
@@ -262,9 +286,9 @@
 				</ul>
 				<!-- ENDIF !maintenanceHeader -->
 			</div>
-		</div>
-	</div>
-	<div class="container" id="content" component="content">
+			</div>
+		</nav>
+		<div class="container" id="content" component="header">
 	<noscript>
 		<div class="alert alert-danger">
 			<p>

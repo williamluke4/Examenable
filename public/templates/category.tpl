@@ -1,12 +1,4 @@
-<input type="hidden" template-variable="category_id" value="{cid}" />
-<input type="hidden" template-variable="category_name" value="{name}" />
-<input type="hidden" template-variable="category_slug" value="{slug}" />
-<input type="hidden" template-variable="topic_count" value="{topic_count}" />
-<input type="hidden" template-variable="currentPage" value="{currentPage}" />
-<input type="hidden" template-variable="pageCount" value="{pageCount}" />
-
-<div class="category row">
-	<div class="col-md-9" no-widget-class="col-lg-12 col-sm-12" no-widget-target="sidebar">
+<div class="category">
 <ol class="breadcrumb">
 	<!-- BEGIN breadcrumbs -->
 	<li itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb" <!-- IF @last -->class="active"<!-- ENDIF @last -->>
@@ -22,95 +14,95 @@
 	</li>
 	<!-- END breadcrumbs -->
 </ol>
-		<div class="subcategories row">
-			<!-- BEGIN children -->
-			<div class="<!-- IF children.class -->{children.class}<!-- ELSE -->col-md-3 col-sm-6 col-xs-12<!-- ENDIF children.class --> category-item" data-cid="{children.cid}" data-numRecentReplies="{children.numRecentReplies}">
-				<meta itemprop="name" content="{children.name}">
+<div class="subcategory">
+	<!-- IF children.length --><p>[[category:subcategories]]</p><!-- ENDIF children.length -->
 
-				<div class="category-icon">
+	<ul class="categories" itemscope itemtype="http://www.schema.org/ItemList">
+		<!-- BEGIN children -->
+<li component="categories/category" data-cid="{../cid}" data-numRecentReplies="1" class="row clearfix">
+	<meta itemprop="name" content="{../name}">
 
-					<!-- IF children.link -->
-					<a style="color: {children.color};" href="{children.link}" itemprop="url" target="_blank">
-					<!-- ELSE -->
-					<a style="color: {children.color};" href="{config.relative_path}/category/{children.slug}" itemprop="url">
-					<!-- ENDIF children.link -->
-						<div
-							id="category-{children.cid}" class="category-header category-header-image-{children.imageClass}"
-							style="
-								<!-- IF children.backgroundImage -->background-image: url({children.backgroundImage});<!-- ENDIF children.backgroundImage -->
-								<!-- IF children.bgColor -->background-color: {children.bgColor};<!-- ENDIF children.bgColor -->
-								color: {children.color};
-							"
-						>
-							<!-- IF !children.link -->
-							<span class="badge {children.unread-class}"><i class="fa fa-book" data-toggle="tooltip" title="[[global:topics]]"></i> <span class="human-readable-number" title="{children.totalTopicCount}">{children.totalTopicCount}</span>&nbsp; <i class="fa fa-pencil" data-toggle="tooltip" title="[[global:posts]]"></i> <span class="human-readable-number" title="{children.totalPostCount}">{children.totalPostCount}</span></span>
-							<!-- ENDIF !children.link -->
-
-							<!-- IF children.icon -->
-							<div><i class="fa {children.icon} fa-4x"></i></div>
-							<!-- ENDIF children.icon -->
-						</div>
-					</a>
-
-					<div class="category-box">
-						<div class="category-info">
-							<!-- IF children.link -->
-							<a href="{children.link}" itemprop="url" target="_blank">
-							<!-- ELSE -->
-							<a href="{config.relative_path}/category/{children.slug}" itemprop="url">
-							<!-- ENDIF children.link-->
-								<h4><!-- IF children.icon --><i class="fa {children.icon} visible-xs-inline"></i> <!-- ENDIF children.icon -->{children.name}</h4>
-							</a>
-							<div class="description" itemprop="description">{children.description}</div>
-						</div>
-						<!-- IF !children.link -->
-						<!-- BEGIN posts -->
-						<div class="post-preview clearfix">
-							<div class="post-preview-content">
-								<strong><a href="{config.relative_path}/topic/{children.posts.topic.slug}">{children.posts.topic.title}</a></strong>
-								<hr/>
-								<a style="color: {children.color};" href="<!-- IF children.posts.user.userslug -->{config.relative_path}/user/{children.posts.user.userslug}<!-- ELSE -->#<!-- ENDIF children.posts.user.userslug-->">
-									<img src="{children.posts.user.picture}" title="{children.posts.user.username}" class="pull-left user-img" />
-								</a>
-								<div class="content">
-								{children.posts.content}
-								</div>
-								<p class="fade-out"></p>
-							</div>
-							<span class="pull-right post-preview-footer">
-								<span class="timeago" title="{children.posts.relativeTime}"></span> &bull;
-								<a href="{config.relative_path}/topic/{children.posts.topic.slug}<!-- IF children.posts.index -->/{children.posts.index}<!-- ENDIF children.posts.index -->">[[global:read_more]]</a>
-							</span>
-						</div>
-						<!-- END posts -->
-						<!-- ENDIF !children.link -->
-					</div>
-				</div>
-			</div>
-			<!-- END children -->
+	<div class="col-md-7 col-sm-9 col-xs-11 content">
+		<div class="icon pull-left" style="{function.generateCategoryBackground}">
+			<i class="fa fa-fw {../icon}"></i>
 		</div>
 
-		<div class="header category-tools clearfix">
-			<!-- IF privileges.topics:create -->
-			<button id="new_topic" class="btn btn-primary">[[category:new_topic_button]]</button>
-			<!-- ELSE -->
-				<!-- IF !loggedIn -->
-				<a href="{config.relative_path}/login" class="btn btn-primary">[[category:guest-login-post]]</a>
-				<!-- ENDIF !loggedIn -->
-			<!-- ENDIF privileges.topics:create -->
+		<h1 class="title">
+<!-- IF ../link -->
+<a href="{../link}" itemprop="url" target="_blank">
+<!-- ELSE -->
+<a href="{config.relative_path}/category/{../slug}" itemprop="url">
+<!-- ENDIF ../link -->
+{../name}
+</a><br />
+			<small>{../descriptionParsed}</small>
+		</h1>
+	</div>
 
-			<span class="pull-right">
-				<!-- IF loggedIn -->
-				<button type="button" class="btn btn-default btn-success watch <!-- IF !isIgnored -->hidden<!-- ENDIF !isIgnored -->">
-					<i class="fa fa-eye"></i>
-					<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[category:watch]]</span>
-				</button>
-				<button type="button" class="btn btn-default btn-warning ignore <!-- IF isIgnored -->hidden<!-- ENDIF isIgnored -->">
-					<i class="fa fa-eye-slash"></i>
-					<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[category:ignore]]</span>
-				</button>
-				<!-- ENDIF loggedIn -->
+	<!-- IF !../link -->
+	<div class="col-md-1 hidden-sm hidden-xs stats">
+		<span class="{../unread-class} human-readable-number" title="{../totalTopicCount}">{../totalTopicCount}</span><br />
+		<small>[[global:topics]]</small>
+	</div>
+	<div class="col-md-1 hidden-sm hidden-xs stats">
+		<span class="{../unread-class} human-readable-number" title="{../totalPostCount}">{../totalPostCount}</span><br />
+		<small>[[global:posts]]</small>
+	</div>
+	<div class="col-md-3 col-sm-3 col-xs-1 teaser hidden-xs">
+<div class="card" style="border-color: {../bgColor}">
+	<!-- BEGIN posts -->
+	<!-- IF @first -->
+	<div component="category/posts">
+		<p>
+			<strong>{../user.username}</strong>
+			<a class="permalink" href="{config.relative_path}/topic/{../topic.slug}<!-- IF ../index -->/{../index}<!-- ENDIF ../index -->">
+				<small class="timeago" title="{../relativeTime}"></small>
+			</a>
+		</p>
+		<div class="post-content">
+			{../content}
+		</div>
+	</div>
+	<!-- ENDIF @first -->
+	<!-- END posts -->
 
+	<!-- IF !../posts.length -->
+	<div component="category/posts">
+		<div class="post-content">
+			[[category:no_new_posts]]
+		</div>
+	</div>
+	<!-- ENDIF !../posts.length -->
+</div>
+	</div>
+	<!-- ENDIF !../link -->
+</li>
+		<!-- END children -->
+	</ul>
+</div>
+
+	<!-- IF children.length --><hr /><!-- ENDIF children.length -->
+
+	<div class="clearfix">
+		<!-- IF privileges.topics:create -->
+		<button id="new_topic" class="btn btn-primary">[[category:new_topic_button]]</button>
+		<!-- ELSE -->
+			<!-- IF !loggedIn -->
+			<a href="{config.relative_path}/login" class="btn btn-primary">[[category:guest-login-post]]</a>
+			<!-- ENDIF !loggedIn -->
+		<!-- ENDIF privileges.topics:create -->
+
+		<span class="pull-right">
+<!-- IF loggedIn -->
+<button type="button" class="btn btn-default btn-success watch <!-- IF !isIgnored -->hidden<!-- ENDIF !isIgnored -->">
+	<i class="fa fa-eye"></i>
+	<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[category:watch]]</span>
+</button>
+<button type="button" class="btn btn-default btn-warning ignore <!-- IF isIgnored -->hidden<!-- ENDIF isIgnored -->">
+	<i class="fa fa-eye-slash"></i>
+	<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[category:ignore]]</span>
+</button>
+<!-- ENDIF loggedIn -->
 <!-- IF privileges.editable -->
 <div class="btn-group thread-tools">
 	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
@@ -185,7 +177,6 @@
 	</ul>
 </div>
 <!-- ENDIF privileges.editable -->
-
 <!-- IF loggedIn -->
 <div class="btn-group" component="thread/sort">
 	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
@@ -201,113 +192,93 @@
 	</ul>
 </div>
 <!-- ENDIF loggedIn -->
+		</span>
+	</div>
 
-				<div class="dropdown share-dropdown inline-block">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[topic:share]]</span>
-						<span class="visible-xs-inline"><i class="fa fa-fw fa-share-alt"></i></span>
-						<span class="caret"></span>
-					</button>
+	<hr />
 
+	<p>{name}</p>
 
-<ul class="dropdown-menu pull-right" role="menu">
+	<!-- IF !topics.length -->
+	<div class="alert alert-warning" id="category-no-topics">
+		[[category:no_topics]]
+	</div>
+	<!-- ENDIF !topics.length -->
 
-	<li role="presentation" class="dropdown-header">[[category:share_this_category]]</li>
-	<!-- IF !config.disableSocialButtons -->
-	<li role="presentation">
-		<a role="menuitem" class="facebook-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-facebook"></i></span> Facebook</a>
+<ul component="category" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}">
+	<meta itemprop="itemListOrder" content="descending">
+	<!-- BEGIN topics -->
+	<li component="category/topic" class="row clearfix {function.generateTopicClass}"data-tid="{topics.tid}" data-index="{topics.index}" data-cid="{topics.cid}" itemprop="itemListElement">
+		<meta itemprop="name" content="{function.stripTags, title}">
+
+		<div class="col-md-7 col-sm-9 col-xs-11 content">
+			<div class="avatar pull-left">
+				<!-- IF showSelect -->
+					<div class="select fa-square-o">
+						<img src="<!-- IF topics.thumb -->{topics.thumb}<!-- ELSE -->{topics.user.picture}<!-- ENDIF topics.thumb -->" class="img-circle user-img" />
+						<i class="fa fa-check"></i>
+					</div>
+				<!-- ELSE -->
+					<a href="{config.relative_path}/user/{topics.user.userslug}" class="pull-left">
+						<img src="<!-- IF topics.thumb -->{topics.thumb}<!-- ELSE -->{topics.user.picture}<!-- ENDIF topics.thumb -->" class="img-circle user-img" title="{topics.user.username}"/>
+					</a>
+				<!-- ENDIF showSelect -->
+			</div>
+
+			<h1 component="topic/header" class="title">
+				<i component="topic/pinned" class="fa fa-thumb-tack <!-- IF !topics.pinned -->hide<!-- ENDIF !topics.pinned -->"></i>
+				<i component="topic/locked" class="fa fa-lock <!-- IF !topics.locked -->hide<!-- ENDIF !topics.locked -->"></i>
+				<a href="{config.relative_path}/topic/{topics.slug}" itemprop="url">{topics.title}</a><br />
+
+				<!-- IF !template.category -->
+				<small>
+					<a href="{config.relative_path}/category/{topics.category.slug}"><i class="fa {topics.category.icon}"></i> {topics.category.name}</a> &bull;
+				</small>
+				<!-- ENDIF !template.category -->
+
+				<span class="tag-list">
+					<!-- BEGIN tags -->
+					<a href="{config.relative_path}/tags/{topics.tags.value}"><span class="tag" style="<!-- IF topics.tags.color -->color: {topics.tags.color};<!-- ENDIF topics.tags.color --><!-- IF topics.tags.bgColor -->background-color: {topics.tags.bgColor};<!-- ENDIF topics.tags.bgColor -->">{topics.tags.value}</span></a>
+					<!-- END tags -->
+					<!-- IF topics.tags.length --><small>&bull;</small><!-- ENDIF topics.tags.length -->
+				</span>
+
+				<small>[[global:posted_ago, <span class="timeago" title="{topics.relativeTime}"></span>]]</small>
+			</h1>
+		</div>
+
+		<div class="col-md-1 hidden-sm hidden-xs stats">
+			<span class="human-readable-number" title="{topics.postcount}">{topics.postcount}</span><br />
+			<small>[[global:posts]]</small>
+		</div>
+		<div class="col-md-1 hidden-sm hidden-xs stats">
+			<span class="human-readable-number" title="{topics.viewcount}">{topics.viewcount}</span><br />
+			<small>[[global:views]]</small>
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-1 teaser hidden-xs">
+			<div class="card" style="border-color: {topics.category.bgColor}">
+				<!-- IF topics.unreplied -->
+				<p class="hidden-xs">
+					[[category:no_replies]]
+				</p>
+				<!-- ELSE -->
+				<p class="hidden-xs">
+					<strong>{topics.teaser.user.username}</strong>
+					<a class="permalink" href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}">
+						<small class="timeago" title="{topics.teaser.timestamp}"></small>
+					</a>
+				</p>
+				<div class="post-content">
+					{topics.teaser.content}
+				</div>
+				<!-- ENDIF topics.unreplied -->
+			</div>
+		</div>
 	</li>
-	<li role="presentation">
-		<a role="menuitem" class="twitter-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-twitter"></i></span> Twitter</a>
-	</li>
-	<li role="presentation">
-		<a role="menuitem" class="google-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-google-plus"></i></span> Google+</a>
-	</li>
-	<!-- ENDIF !config.disableSocialButtons -->
-	<li class="text-center">
-		<input id="category-link" readonly="true" type="text" value="" class="form-control post-link inline-block"></input>
-	</li>
+	<!-- END topics -->
 </ul>
 
-				</div>
-			</span>
-		</div>
-		<!-- IF !children.length -->
-			<!-- IF !topics.length -->
-			<div class="alert alert-warning" id="category-no-topics">
-				[[category:no_topics]]
-			</div>
-			<!-- ENDIF !topics.length -->
-		<!-- ENDIF !children.length -->
-
-
-		<ul component="category" id="topics-container" itemscope itemtype="http://www.schema.org/ItemList" data-nextstart="{nextStart}">
-			<meta itemprop="itemListOrder" content="descending">
-			<!-- BEGIN topics -->
-			<li component="category/topic" class="category-item {function.generateTopicClass}" data-tid="{topics.tid}" data-index="{topics.index}" data-cid="{topics.cid}" itemprop="itemListElement">
-
-				<div class="category-body">
-					<div class="row">
-						<div class="col-md-8 col-sm-9">
-							<!-- IF privileges.editable -->
-								<i class="fa fa-fw fa-square-o pull-left select pointer"></i>
-							<!-- ENDIF privileges.editable -->
-
-							<div class="category-profile-pic">
-								<a href="<!-- IF topics.user.userslug -->{config.relative_path}/user/{topics.user.userslug}<!-- ELSE -->#<!-- ENDIF topics.user.userslug -->">
-									<!-- IF topics.thumb -->
-									<img src="{topics.thumb}" alt="{topics.title}" class="profile-image user-img" title="{topics.title}">
-									<!-- ELSE -->
-									<img src="{topics.user.picture}" alt="{topics.user.username}" class="profile-image user-img" title="{topics.user.username}">
-									<!-- ENDIF topics.thumb -->
-								</a>
-							</div>
-							<div class="category-text">
-								<p><strong><i component="topic/pinned" class="fa fa-thumb-tack<!-- IF !topics.pinned --> hide<!-- ENDIF !topics.pinned -->"></i> <i component="topic/locked" class="fa fa-lock<!-- IF !topics.locked --> hide<!-- ENDIF !topics.locked -->"></i></strong>
-									<a component="topic/header" href="{config.relative_path}/topic/{topics.slug}" itemprop="url" class="topic-title">{topics.title}</a><br />
-									<small>
-									[[global:posted_ago, <span class="timeago" title="{topics.relativeTime}"></span>]]
-									<!-- IF !topics.unreplied -->
-									<span class="hidden-md hidden-lg">
-									<br/>
-									<a href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}">[[global:replied_ago, <span class="timeago" title="{topics.teaser.timestamp}"></span>]]</a>
-									</span>
-									<!-- ENDIF !topics.unreplied -->
-									<br/>
-<!-- IF topics.tags.length -->
-	<!-- BEGIN tags -->
-		<a href="{config.relative_path}/tags/{topics.tags.value}"><span class="tag-item" data-tag="{topics.tags.value}" style="<!-- IF topics.tags.color -->color: {topics.tags.color};<!-- ENDIF topics.tags.color --><!-- IF topics.tags.bgColor -->background-color: {topics.tags.bgColor};<!-- ENDIF topics.tags.bgColor -->">{topics.tags.value}</span><span class="tag-topic-count">{topics.tags.score}</span></a>
-	<!-- END tags -->
-<!-- ENDIF topics.tags.length -->
-									</small>
-								</p>
-							</div>
-						</div>
-						<div class="col-xs-1 category-stat hidden-xs">
-							<strong class="human-readable-number" title="{topics.postcount}">{topics.postcount}</strong><br />
-							<small>[[global:posts]]</small>
-						</div>
-						<div class="col-xs-1 category-stat hidden-xs">
-							<strong class="human-readable-number" title="{topics.viewcount}">{topics.viewcount}</strong><br />
-							<small>[[global:views]]</small>
-						</div>
-						<div class="col-xs-2 category-stat replies hidden-sm hidden-xs">
-							<!-- IF topics.unreplied -->
-							<p class="no-replies">[[category:no_replies]]</p>
-							<!-- ELSE -->
-							<a href="<!-- IF topics.teaser.user.userslug -->{config.relative_path}/user/{topics.teaser.user.userslug}<!-- ELSE -->#<!-- ENDIF topics.teaser.user.userslug -->"><img class="profile-image small user-img" src="{topics.teaser.user.picture}" title="{topics.teaser.user.username}" /></a>
-							<a href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}">
-								[[global:replied_ago, <span class="timeago" title="{topics.teaser.timestamp}"></span>]]
-							</a>
-							<!-- ENDIF topics.unreplied -->
-						</div>
-					</div>
-				</div>
-
-			</li>
-			<!-- END topics -->
-		</ul>
-		<!-- IF config.usePagination -->
+	<!-- IF config.usePagination -->
 
 <div class="text-center pagination-container<!-- IF !pagination.pages.length --> hidden<!-- ENDIF !pagination.pages.length -->">
 	<ul class="pagination">
@@ -333,10 +304,7 @@
 	</ul>
 </div>
 
-		<!-- ENDIF config.usePagination -->
-	</div>
-
-	<div widget-area="sidebar" class="col-md-3 col-xs-12 category-sidebar"></div>
+	<!-- ENDIF config.usePagination -->
 </div>
 
 <div id="move_thread_modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="Move Topic" aria-hidden="true">
@@ -351,7 +319,7 @@
 				<p>
 					[[topic:disabled_categories_note]]
 				</p>
-				<div id="move-confirm" style="display: none;">
+				<div id="move-confirm" class="hidden">
 					<hr />
 					<div class="alert alert-info">[[topic:topic_will_be_moved_to]] <strong><span id="confirm-category-name"></span></strong></div>
 				</div>
@@ -393,3 +361,10 @@
 
 </noscript>
 <!-- ENDIF !config.usePagination -->
+
+<input type="hidden" template-variable="category_id" value="{cid}" />
+<input type="hidden" template-variable="category_name" value="{name}" />
+<input type="hidden" template-variable="category_slug" value="{slug}" />
+<input type="hidden" template-variable="topic_count" value="{topic_count}" />
+<input type="hidden" template-variable="currentPage" value="{currentPage}" />
+<input type="hidden" template-variable="pageCount" value="{pageCount}" />

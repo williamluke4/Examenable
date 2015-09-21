@@ -1,5 +1,5 @@
 {
-    "url": "http://localhost:4567",
+    "url": "http://10.240.0.2:80",
     "secret": "409dc014-0919-4360-ac9a-d2b9e99483a9",
     "database": "mongo",
     "mongo": {
@@ -7,6 +7,6 @@
         "port": "27017",
         "username": "",
         "password": "",
-        "database": "NOdebbProduction"
+        "database": "Examenable"
     }
 }

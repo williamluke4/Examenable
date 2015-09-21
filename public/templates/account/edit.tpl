@@ -36,9 +36,9 @@
 
 <div class="account">
 	<div class="row">
-		<div class="col-md-2" style="text-align: center; margin-bottom:20px;">
+		<div class="col-md-2">
 			<div class="account-picture-block text-center">
-				<img id="user-current-picture" class="user-profile-picture img-thumbnail" src="{picture}" /><br /><br />
+				<img id="user-current-picture" class="user-profile-picture" src="{picture}" /><br /><br />
 				<a id="changePictureBtn" href="#" class="btn btn-primary">[[user:change_picture]]</a>
 				<br/><br/>
 				<!-- IF config.allowAccountDelete -->
@@ -109,7 +109,6 @@
 							<textarea class="form-control" id="inputAboutMe" rows="5">{aboutme}</textarea>
 						</div>
 					</div>
-
 					<!-- IF !disableSignatures -->
 					<div class="control-group">
 						<label class="control-label" for="inputSignature">[[user:signature]]</label> <small><label id="signatureCharCountLeft"></label></small>
@@ -132,43 +131,41 @@
 		</div>
 
 		<div class="col-md-5">
-			<div style="vertical-align:top;">
-				<form class='form-horizontal'>
-					<!-- IF isSelf -->
-					<div class="control-group">
-						<label class="control-label" for="inputCurrentPassword">[[user:current_password]]</label>
-						<div class="controls">
-							<input autocomplete="off" class="form-control" type="password" id="inputCurrentPassword" placeholder="[[user:current_password]]" value=""<!-- IF !hasPassword --> disabled<!-- ENDIF !hasPassword-->>
-						</div>
+			<form class='form-horizontal'>
+				<!-- IF isSelf -->
+				<div class="control-group">
+					<label class="control-label" for="inputCurrentPassword">[[user:current_password]]</label>
+					<div class="controls">
+						<input autocomplete="off" class="form-control" type="password" id="inputCurrentPassword" placeholder="[[user:current_password]]" value=""<!-- IF !hasPassword --> disabled<!-- ENDIF !hasPassword-->>
 					</div>
-					<!-- ENDIF isSelf -->
+				</div>
+				<!-- ENDIF isSelf -->
 
-					<div class="control-group">
-						<label class="control-label" for="inputNewPassword">[[user:password]]</label>
-						<div class="input-group">
-							<input class="form-control" type="password" id="inputNewPassword" placeholder="[[user:password]]" value="">
-							<span class="input-group-addon">
-								<span id="password-notify"><span class="msg"></span><i class="fa fa-circle-o"></i></span>
-							</span>
-						</div>
+				<div class="control-group">
+					<label class="control-label" for="inputNewPassword">[[user:password]]</label>
+					<div class="input-group">
+						<input class="form-control" type="password" id="inputNewPassword" placeholder="[[user:password]]" value="">
+						<span class="input-group-addon">
+							<span id="password-notify"><span class="msg"></span><i class="fa fa-circle-o"></i></span>
+						</span>
 					</div>
+				</div>
 
-					<div class="control-group">
-						<label class="control-label" for="inputNewPasswordAgain">[[user:confirm_password]]</label>
-						<div class="input-group">
-							<input class="form-control" type="password" id="inputNewPasswordAgain" placeholder="[[user:confirm_password]]" value="">
-							<span class="input-group-addon">
-								<span id="password-confirm-notify"><span class="msg"></span><i class="fa fa-circle-o"></i></span>
-							</span>
-						</div>
+				<div class="control-group">
+					<label class="control-label" for="inputNewPasswordAgain">[[user:confirm_password]]</label>
+					<div class="input-group">
+						<input class="form-control" type="password" id="inputNewPasswordAgain" placeholder="[[user:confirm_password]]" value="">
+						<span class="input-group-addon">
+							<span id="password-confirm-notify"><span class="msg"></span><i class="fa fa-circle-o"></i></span>
+						</span>
 					</div>
-					<br/>
-					<div class="form-actions">
-						<a id="changePasswordBtn" href="#" class="btn btn-primary"><i class="hide fa fa-spinner fa-spin"></i> [[user:change_password]]</a>
-					</div>
+				</div>
+				<br/>
+				<div class="form-actions">
+					<a id="changePasswordBtn" href="#" class="btn btn-primary"><i class="hide fa fa-spinner fa-spin"></i> [[user:change_password]]</a>
+				</div>
 
-				</form>
-			</div>
+			</form>
 		</div>
 	</div>
 
@@ -181,7 +178,7 @@
 				</div>
 				<div class="modal-body">
 					<div id="gravatar-box">
-						<img id="user-gravatar-picture" src="" class="img-thumbnail user-profile-picture">
+						<img id="user-gravatar-picture" src="" class="user-profile-picture">
 						<span class="user-picture-label">[[user:gravatar]]</span>
 						<i class='fa fa-check fa-2x'></i>
 					</div>
@@ -189,7 +186,7 @@
 
 					<!-- IF config.allowProfileImageUploads -->
 					<div id="uploaded-box">
-						<img id="user-uploaded-picture" src="" class="img-thumbnail user-profile-picture">
+						<img id="user-uploaded-picture" src="" class="user-profile-picture">
 						<span class="user-picture-label">[[user:uploaded_picture]]</span>
 						<i class='fa fa-check fa-2x'></i>
 					</div>

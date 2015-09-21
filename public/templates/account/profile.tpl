@@ -41,7 +41,7 @@
 			<div class="account-picture-block panel panel-default">
 				<div class="panel-body">
 					<div class="text-center">
-						<img src="{picture}" class="user-profile-picture img-thumbnail" />
+						<img src="{picture}" class="user-profile-picture" />
 					</div>
 
 					<div>
@@ -59,8 +59,9 @@
  							<a id="follow-btn" href="#" class="btn btn-success btn-sm <!-- IF isFollowing -->hide<!-- ENDIF isFollowing -->">[[user:follow]]</a>
  							<a id="unfollow-btn" href="#" class="btn btn-warning btn-sm <!-- IF !isFollowing -->hide<!-- ENDIF !isFollowing -->">[[user:unfollow]]</a>
 
-							<!-- IF isAdmin -->
+                            				<!-- IF isAdmin -->
 							<br/><br/>
+
 							<a id="banAccountBtn" href="#" class="btn btn-danger btn-sm <!-- IF banned -->hide<!-- ENDIF banned -->">[[user:ban_account]]</a>
 							<a id="unbanAccountBtn" href="#" class="btn btn-danger btn-sm <!-- IF !banned -->hide<!-- ENDIF !banned -->">[[user:unban_account]]</a>
 							<a id="deleteAccountBtn" href="#" class="btn btn-danger btn-sm">[[user:delete_account]]</a><br/><br/>
@@ -72,6 +73,7 @@
 						<div id="banLabel" class="text-center <!-- IF !banned -->hide<!-- ENDIF !banned -->">
 							<span class="label label-danger">[[user:banned]]</span>
 						</div>
+
 						<!-- IF aboutme -->
 						<hr/>
 						<div component="aboutme" class="text-center">
@@ -98,6 +100,7 @@
 								<span class="account-bio-label">[[user:profile_views]]</span>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -184,11 +187,10 @@
 
 		</div>
 
-
 		<div class="col-md-7">
-			<!-- IF !posts.length -->
-			<div class="alert alert-warning">[[user:has_no_posts]]</div>
-			<!-- ENDIF !posts.length -->
+		<!-- IF !posts.length -->
+		<div class="alert alert-warning">[[user:has_no_posts]]</div>
+		<!-- ENDIF !posts.length -->
 <ul component="posts" class="posts-list" data-nextstart="{nextStart}">
 
 	<!-- BEGIN posts -->
@@ -223,6 +225,7 @@
 	<i class="fa fa-refresh fa-spin"></i>
 </div>
 		</div>
+
 	</div>
 
 	<br/>

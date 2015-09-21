@@ -1,39 +1,29 @@
-<div class="inline-block">
-
-	<span class="tags">
+<span class="tags">
 	<!-- BEGIN tags -->
-	<a href="{config.relative_path}/tags/{tags.value}"><span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span><span class="tag-topic-count">{tags.score}</span></a>
+	<a href="{config.relative_path}/tags/{tags.value}">
+	<span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span>
+	<span class="tag-topic-count human-readable-number" title="{tags.score}">{tags.score}</span></a>
 	<!-- END tags -->
-	</span>
+</span>
 
-	<!-- IF tags.length -->
-	<span>|</span>
-	<!-- ENDIF tags.length -->
-
-	<small class="topic-stats">
-		<span>[[global:posts]]</span>
-		<strong><span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span></strong> |
-		<span>[[global:views]]</span>
-		<strong><span class="human-readable-number" title="{viewcount}">{viewcount}</span></strong>
-	</small>
-	<span class="browsing-users hidden">
-		&bull;
-		<small><span>[[category:browsing]]</span></small>
-		<div component="topic/browsing/list" class="thread_active_users active-users inline-block"></div>
-		<small class="hidden">
-			<i class="fa fa-users"></i> <span component="topic/browsing/count" class="user-count"></span>
-		</small>
-	</span>
-</div>
-
-<div class="topic-main-buttons pull-right inline-block">
-	<div class="loading-indicator" done="0" style="display:none;">
+<div class="topic-main-buttons pull-right">
+	<span class="loading-indicator btn pull-left hidden" done="0">
 		<span class="hidden-xs">[[topic:loading_more_posts]]</span> <i class="fa fa-refresh fa-spin"></i>
+	</span>
+
+	<div class="stats">
+		<span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span><br />
+		<small>[[global:posts]]</small>
+	</div>
+	<div class="stats">
+		<span class="human-readable-number" title="{viewcount}">{viewcount}</span><br />
+		<small>[[global:views]]</small>
 	</div>
 
 
 
-<a component="topic/reply" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
+
+<a component="topic/reply" href="#" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
 
 <!-- IF loggedIn -->
 
@@ -58,21 +48,14 @@
 
 
 
-<!-- IF loggedIn -->
-<div class="btn-group dropup" component="thread/sort">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:sort_by]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
-		<li><a href="#" class="oldest_to_newest" data-sort="oldest_to_newest"><i class="fa fa-fw"></i> [[topic:oldest_to_newest]]</a></li>
-		<li><a href="#" class="newest_to_oldest" data-sort="newest_to_oldest"><i class="fa fa-fw"></i> [[topic:newest_to_oldest]]</a></li>
-		<li><a href="#" class="most_votes" data-sort="most_votes"><i class="fa fa-fw"></i> [[topic:most_votes]]</a></li>
-	</ul>
-</div>
-<!-- ENDIF loggedIn -->
-
 <!-- IF privileges.view_thread_tools -->
-<div class="btn-group thread-tools dropup">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:thread_tools.title]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
+<div class="btn-group thread-tools">
+	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+		<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[topic:thread_tools.title]]</span>
+		<span class="visible-xs-inline"><i class="fa fa-fw fa-gear"></i></span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu dropdown-menu-right">
 		<!-- IF privileges.editable -->
 		<li>
 			<a component="topic/mark-unread-for-all" href="#">
@@ -100,7 +83,6 @@
 			</a>
 		</li>
 		<li class="divider"></li>
-
 		<li>
 			<a component="topic/move" href="#">
 				<i class="fa fa-fw fa-arrows"></i> [[topic:thread_tools.move]]
@@ -141,4 +123,6 @@
 </div>
 <!-- ENDIF privileges.view_thread_tools -->
 </div>
-<div style="clear:both;"></div>
+<div class="clearfix"></div>
+
+<hr />

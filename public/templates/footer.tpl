@@ -1,4 +1,5 @@
-	</div><!--END container -->
+		</div><!--END container -->
+	</main>
 
 	<div class="hide tpl-500">
 <div class="alert alert-danger">
@@ -20,7 +21,7 @@
 				<div class="modal-body">
 					<form id="uploadForm" action="" method="post" enctype="multipart/form-data">
 						<div class="form-group">
-							<label for="userPhoto">[[user:upload_a_picture]]</label>
+							<label for="userPhotoInput">[[user:upload_a_picture]]</label>
 							<input type="file" id="userPhotoInput" name="files[]">
 							<p class="help-block">[[user:image_spec]] (<span id="file-size-block" class="hide"></span>)</p>
 						</div>
@@ -44,7 +45,6 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-
 
 	<div class="topic-search hidden">
 		<div class="btn-group">

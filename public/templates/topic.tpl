@@ -15,31 +15,62 @@
 	<!-- END breadcrumbs -->
 </ol>
 
+	<h1 component="post/header" itemprop="name">
+
+		<i class="fa fa-thumb-tack <!-- IF !pinned -->hidden<!-- ENDIF !pinned -->"></i> <i class="fa fa-lock <!-- IF !locked -->hidden<!-- ENDIF !locked -->"></i> <span class="topic-title" component="topic/title">{title}</span>
+<!-- IF loggedIn -->
+<div class="btn-group hidden-xs hidden-sm" component="thread/sort">
+	<button class="btn dropdown-toggle" data-toggle="dropdown" type="button">[[topic:sort_by]] <span class="caret"></span></button>
+	<ul class="dropdown-menu">
+		<li><a href="#" class="oldest_to_newest" data-sort="oldest_to_newest"><i class="fa fa-fw"></i> [[topic:oldest_to_newest]]</a></li>
+		<li><a href="#" class="newest_to_oldest" data-sort="newest_to_oldest"><i class="fa fa-fw"></i> [[topic:newest_to_oldest]]</a></li>
+		<li><a href="#" class="most_votes" data-sort="most_votes"><i class="fa fa-fw"></i> [[topic:most_votes]]</a></li>
+	</ul>
+</div>
+<!-- ENDIF loggedIn -->
+
+		<button component="topic/follow" class="btn hidden-xs hidden-sm <!-- IF isFollowing -->hidden<!-- ENDIF isFollowing -->">
+			<span>[[topic:watch]]</span> <i class="fa fa-eye"></i>
+		</button>
+
+		<button component="topic/unfollow" class="btn hidden-xs hidden-sm <!-- IF !isFollowing -->hidden<!-- ENDIF !isFollowing -->">
+			<span>[[topic:unwatch]]</span> <i class="fa fa-eye-slash"></i>
+		</button>
+
+		<span class="browsing-users hidden hidden-xs hidden-sm pull-right">
+			<span>[[category:browsing]]</span>
+			<div component="topic/browsing/list" class="thread_active_users active-users inline-block"></div>
+			<small class="hidden">
+				<i class="fa fa-users"></i> <span component="topic/browsing/count" class="user-count"></span>
+			</small>
+		</span>
+	</h1>
+
 	<div component="topic/deleted/message" class="alert alert-warning<!-- IF !deleted --> hidden<!-- ENDIF !deleted -->">[[topic:deleted_message]]</div>
 
-	<ul component="topic" id="post-container" class="posts" data-tid="{tid}">
+	<ul component="topic" class="posts" data-tid="{tid}">
 		<!-- BEGIN posts -->
-			<li component="post" class="post-row <!-- IF posts.deleted -->deleted<!-- ENDIF posts.deleted -->"data-pid="{posts.pid}" data-uid="{posts.uid}" data-username="{posts.user.username}" data-userslug="{posts.user.userslug}" data-index="{posts.index}" data-timestamp="{posts.timestamp}" data-votes="{posts.votes}" itemscope itemtype="http://schema.org/Comment">
+			<li component="post" class="clearfix <!-- IF posts.deleted -->deleted<!-- ENDIF posts.deleted -->"data-pid="{posts.pid}" data-uid="{posts.uid}" data-username="{posts.user.username}" data-userslug="{posts.user.userslug}" data-index="{posts.index}" data-timestamp="{posts.timestamp}" data-votes="{posts.votes}" itemscope itemtype="http://schema.org/Comment">
 				<a component="post/anchor" name="{posts.index}"></a>
 
 				<meta itemprop="datePublished" content="{posts.relativeTime}">
 				<meta itemprop="dateModified" content="{posts.relativeEditTime}">
 
-				<div class="topic-item">
-					<div class="topic-body">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="topic-profile-pic hidden-xs text-center">
-									<a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->">
-										<img src="{posts.user.picture}" alt="{posts.user.username}" class="profile-image user-img" title="{posts.user.username}">
-									</a>
-									<small class="username" title="{posts.user.username}"><a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->">{posts.user.username}</a></small>
+<div class="clearfix">
+	<div class="icon pull-left">
+		<a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->">
+			<img src="{posts.user.picture}" align="left" itemprop="image" />
+			<!-- IF posts.user.banned -->
+			<span class="label label-danger">[[user:banned]]</span>
+			<!-- ENDIF posts.user.banned -->
+		</a>
+	</div>
 
-									<!-- IF posts.user.banned -->
-									<div class="text-center">
-										<span class="label label-danger">[[user:banned]]</span>
-									</div>
-									<!-- ENDIF posts.user.banned -->
+	<small class="pull-left">
+		<i component="user/status" class="fa fa-circle status {posts.user.status}" title="[[global:{posts.user.status}]]"></i>
+		<strong>
+			<a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.username}</a>
+		</strong>
 
 <!-- IF posts.user.groups.length -->
 <!-- BEGIN groups -->
@@ -50,192 +81,157 @@
 <!-- ENDIF ../selected -->
 <!-- END groups -->
 <!-- ENDIF posts.user.groups.length -->
-								</div>
-								<div class="topic-text">
-									<!-- IF @first -->
-									<h3 class="topic-title">
-										<p component="post/header" class="topic-title" itemprop="name"><i class="fa fa-thumb-tack <!-- IF !pinned -->hidden<!-- ENDIF !pinned -->"></i> <i class="fa fa-lock <!-- IF !locked -->hidden<!-- ENDIF !locked -->"></i> <span component="topic/title">{title}</span></p>
-										<hr>
-									</h3>
-									<!-- ENDIF @first -->
-									<div component="post/content" class="post-content" itemprop="text">{posts.content}</div>
-									<!-- IF posts.user.signature -->
-									<div class="post-signature">{posts.user.signature}</div>
-									<!-- ENDIF posts.user.signature -->
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="topic-footer">
-						<div class="row">
-							<div class="">
-								<small class="pull-right">
-									<span>
-										<!-- IF posts.user.userslug -->
-										<i component="user/status" class="fa fa-circle status {posts.user.status}" title='[[global:{posts.user.status}]]'></i>
-										<!-- ENDIF posts.user.userslug -->
-										<span data-username="{posts.user.username}" data-uid="{posts.user.uid}">
-											<!-- IF posts.user.userslug -->
-											[[global:user_posted_ago, <strong><a href="{config.relative_path}/user/{posts.user.userslug}" itemprop="author">{posts.user.username}</a></strong>, <span class="timeago" title="{posts.relativeTime}"></span>]]
-											<!-- ELSE -->
-											[[global:guest_posted_ago, <span class="timeago" title="{posts.relativeTime}"></span>]]
-											<!-- ENDIF posts.user.userslug -->
-										</span>
-									</span>
+
+		<div class="visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
+			[[global:posted_ago, <a class="permalink" href="{config.relative_path}/topic/{slug}/{function.getBookmarkFromIndex}"><span class="timeago" title="{posts.relativeTime}"></span></a>]]
+			<i class="fa fa-pencil-square pointer edit-icon <!-- IF !posts.editor.username -->hidden<!-- ENDIF !posts.editor.username -->"></i>
+
+			<span class="post-tools">
+				<a component="post/reply" href="#" class="no-select <!-- IF !privileges.topics:reply -->hidden<!--ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
+				<a component="post/quote" href="#" class="no-select <!-- IF !privileges.topics:reply -->hidden<!--ENDIF !privileges.topics:reply -->">[[topic:quote]]</a>
+			</span>
+			<span>
+				<!-- IF posts.user.custom_profile_info.length -->
+				&#124;
+				<!-- BEGIN custom_profile_info -->
+				{posts.user.custom_profile_info.content}
+				<!-- END custom_profile_info -->
+				<!-- ENDIF posts.user.custom_profile_info.length -->
+			</span>
+		</div>
+		<div class="votes">
+			<!-- IF !reputation:disabled -->
+			<a component="post/upvote" href="#" class="<!-- IF posts.upvoted -->upvoted<!-- ENDIF posts.upvoted -->">
+				<i class="fa fa-chevron-up"></i>
+			</a>
+			<span component="post/vote-count" data-votes="{posts.votes}">{posts.votes}</span>
+			<!-- IF !downvote:disabled -->
+			<a component="post/downvote" href="#" class="<!-- IF posts.downvoted -->downvoted<!-- ENDIF posts.downvoted -->">
+				<i class="fa fa-chevron-down"></i>
+			</a>
+			<!-- ENDIF !downvote:disabled -->
+			<!-- ENDIF !reputation:disabled -->
+		</div>
+
+<div class="dropdown moderator-tools">
+	<a href="#" data-toggle="dropdown"><i class="fa fa-fw fa-ellipsis-v"></i></a>
+	<ul class="dropdown-menu dropdown-menu-right" role="menu">
+
+		<!-- IF posts.display_moderator_tools -->
+		<li role="presentation" class="dropdown-header">[[topic:tools]]</li>
+		<li role="presentation">
+			<a component="post/edit" role="menuitem" tabindex="-1" href="#">
+				<span class="menu-icon"><i class="fa fa-pencil"></i></span> [[topic:edit]]
+			</a>
+		</li>
+		<li role="presentation">
+			<a component="post/delete" role="menuitem" tabindex="-1" href="#" class="<!-- IF posts.deleted -->hidden<!-- ENDIF posts.deleted -->">
+				<div class="inline menu-icon"><i class="fa fa-trash-o"></i></div> <span>[[topic:delete]]</span>
+			</a>
+		</li>
+		<li role="presentation">
+			<a component="post/restore" role="menuitem" tabindex="-1" href="#" class="<!-- IF !posts.deleted -->hidden<!-- ENDIF !posts.deleted -->">
+				<div class="inline menu-icon"><i class="fa fa-history"></i></div> <span>[[topic:restore]]</span>
+			</a>
+		</li>
+		<li role="presentation">
+			<a component="post/purge" role="menuitem" tabindex="-1" href="#" class="<!-- IF !posts.deleted -->hidden<!-- ENDIF !posts.deleted -->">
+				<span class="menu-icon"><i class="fa fa-eraser"></i></span> [[topic:purge]]
+			</a>
+		</li>
+		<!-- IF posts.display_move_tools -->
+		<li role="presentation">
+			<a component="post/move" role="menuitem" tabindex="-1" href="#">
+				<span class="menu-icon"><i class="fa fa-arrows"></i></span> [[topic:move]]
+			</a>
+		</li>
+		<!-- ENDIF posts.display_move_tools -->
+		<li role="presentation" class="divider"></li>
+		<!-- ENDIF posts.display_moderator_tools -->
+
+		<li role="presentation">
+			<a component="post/favourite" role="menuitem" tabindex="-1" href="#" data-favourited="{posts.favourited}">
+
+				<span class="favourite-text">[[topic:favourite]]</span>
+				<span component="post/favourite-count" class="favouriteCount" data-favourites="{posts.reputation}">{posts.reputation}</span>&nbsp;
+
+				<i component="post/favourite/on" class="fa fa-heart <!-- IF !posts.favourited -->hidden<!-- ENDIF !posts.favourited -->"></i>
+				<i component="post/favourite/off" class="fa fa-heart-o <!-- IF posts.favourited -->hidden<!-- ENDIF posts.favourited -->"></i>
+			</a>
+		</li>
+
+		<!-- IF !config.disableSocialButtons -->
+		<li role="presentation" class="divider"></li>
+		<li role="presentation" class="dropdown-header">[[topic:share_this_post]]</li>
+		<li role="presentation">
+			<a role="menuitem" class="facebook-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-facebook"></i></span> Facebook</a>
+		</li>
+		<li role="presentation">
+			<a role="menuitem" class="twitter-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-twitter"></i></span> Twitter</a>
+		</li>
+		<li role="presentation">
+			<a role="menuitem" class="google-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-google-plus"></i></span> Google+</a>
+		</li>
+		<!-- ENDIF !config.disableSocialButtons -->
+
+		<li role="presentation" class="divider"></li>
+
+		<!-- IF !posts.selfPost -->
+		<li role="presentation">
+			<a component="post/flag" role="menuitem" tabindex="-1" href="#">
+				[[topic:flag_title]]
+			</a>
+		</li>
+		<!-- ENDIF !posts.selfPost -->
+	</ul>
+</div>
+	</small>
+</div>
+
+<br />
+<div class="content" component="post/content" itemprop="text">
+	{posts.content}
+</div>
+<!-- IF posts.user.signature -->
+<div component="post/signature" data-uid="{posts.user.uid}" class="post-signature">{posts.user.signature}</div>
+<!-- ENDIF posts.user.signature -->
 
 
-									<span component="post/editor" class="<!-- IF !posts.editor.username --> hidden<!-- ENDIF !posts.editor.username -->">, [[global:last_edited_by_ago, <strong><a href="{config.relative_path}/user/{posts.editor.userslug}">{posts.editor.username}</a></strong>, <span class="timeago" title="{posts.relativeEditTime}"></span>]]</span>
+<small data-editor="{posts.editor.userslug}" component="post/editor" class="hidden">[[global:last_edited_by_ago, <strong>{posts.editor.username}</strong>, <span class="timeago" title="{posts.relativeEditTime}"></span>]]</small>
 
-								</small>
 
-								<div class="dropdown moderator-tools" component="post/tools">
-									<a href="#" data-toggle="dropdown"><i class="fa fa-fw fa-gear"></i></a>
-									<ul class="dropdown-menu" role="menu">
-<!-- IF posts.display_moderator_tools -->
-<li role="presentation" class="dropdown-header">[[topic:tools]]</li>
-<li role="presentation">
-	<a component="post/edit" role="menuitem" tabindex="-1" href="#">
-		<span class="menu-icon"><i class="fa fa-pencil"></i></span> [[topic:edit]]
-	</a>
-</li>
-<li role="presentation">
-	<a component="post/delete" role="menuitem" tabindex="-1" href="#" class="<!-- IF posts.deleted -->hidden<!-- ENDIF posts.deleted -->">
-		<div class="inline menu-icon"><i class="fa fa-trash-o"></i></div> <span>[[topic:delete]]</span>
-	</a>
-</li>
-<li role="presentation">
-	<a component="post/restore" role="menuitem" tabindex="-1" href="#" class="<!-- IF !posts.deleted -->hidden<!-- ENDIF !posts.deleted -->">
-		<div class="inline menu-icon"><i class="fa fa-history"></i></div> <span>[[topic:restore]]</span>
-	</a>
-</li>
-<li role="presentation">
-	<a component="post/purge" role="menuitem" tabindex="-1" href="#" class="<!-- IF !posts.deleted -->hidden<!-- ENDIF !posts.deleted -->">
-		<span class="menu-icon"><i class="fa fa-eraser"></i></span> [[topic:purge]]
-	</a>
-</li>
-<!-- IF posts.display_move_tools -->
-<li role="presentation">
-	<a component="post/move" role="menuitem" tabindex="-1" href="#">
-		<span class="menu-icon"><i class="fa fa-arrows"></i></span> [[topic:move]]
-	</a>
-</li>
-<!-- ENDIF posts.display_move_tools -->
-<li role="presentation" class="divider"></li>
-<!-- ENDIF posts.display_moderator_tools -->
+<hr />
 
-<li role="presentation">
-	<a component="post/favourite" role="menuitem" tabindex="-1" href="#" data-favourited="{posts.favourited}">
-
-		<span class="favourite-text">[[topic:favourite]]</span>
-		<span component="post/favourite-count" class="favouriteCount" data-favourites="{posts.reputation}">{posts.reputation}</span>&nbsp;
-
-		<i component="post/favourite/on" class="fa fa-heart <!-- IF !posts.favourited -->hidden<!-- ENDIF !posts.favourited -->"></i>
-		<i component="post/favourite/off" class="fa fa-heart-o <!-- IF posts.favourited -->hidden<!-- ENDIF posts.favourited -->"></i>
-	</a>
-</li>
-
-<!-- IF !config.disableSocialButtons -->
-<li role="presentation" class="divider"></li>
-<li role="presentation" class="dropdown-header">[[topic:share_this_post]]</li>
-<li role="presentation">
-	<a role="menuitem" class="facebook-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-facebook"></i></span> Facebook</a>
-</li>
-<li role="presentation">
-	<a role="menuitem" class="twitter-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-twitter"></i></span> Twitter</a>
-</li>
-<li role="presentation">
-	<a role="menuitem" class="google-share" tabindex="-1" href="#"><span class="menu-icon"><i class="fa fa-google-plus"></i></span> Google+</a>
-</li>
-<!-- ENDIF !config.disableSocialButtons -->
-
-<li role="presentation" class="divider"></li>
-
-<!-- IF !posts.selfPost -->
-<li role="presentation">
-	<a component="post/flag" role="menuitem" tabindex="-1" href="#">
-		[[topic:flag_title]]
-	</a>
-</li>
-<!-- ENDIF !posts.selfPost -->
-									</ul>
-								</div>
-
-								<!-- IF !reputation:disabled -->
-								&bull;
-								<a component="post/upvote" href="#" class="upvote<!-- IF posts.upvoted --> upvoted<!-- ENDIF posts.upvoted -->">
-									<i class="fa fa-chevron-up"></i>
-								</a>
-								<span component="post/vote-count" class="votes" data-votes="{posts.votes}">{posts.votes}</span>
-								<!-- IF !downvote:disabled -->
-								<a component="post/downvote" href="#" class="downvote<!-- IF posts.downvoted --> downvoted<!-- ENDIF posts.downvoted -->">
-									<i class="fa fa-chevron-down"></i>
-								</a>
-								<!-- ENDIF !downvote:disabled -->
-								<!-- ENDIF !reputation:disabled -->
-
-								<!-- IF posts.user.custom_profile_info.length -->
-									<!-- BEGIN custom_profile_info -->
-									&bull; {posts.user.custom_profile_info.content}
-									<!-- END custom_profile_info -->
-								<!-- ENDIF posts.user.custom_profile_info.length -->
-								<span class="post-tools">
-									<!-- IF !posts.selfPost -->
-									<!-- IF posts.user.userslug -->
-									<!-- IF loggedIn -->
-									<!-- IF !config.disableChat -->
-									<button component="post/chat" class="btn btn-sm btn-link chat" type="button" title="[[topic:chat]]"><i class="fa fa-comment"></i><span class="hidden-xs-inline"> [[topic:chat]]</span></button>
-									<!-- ENDIF !config.disableChat -->
-									<!-- ENDIF loggedIn -->
-									<!-- ENDIF posts.user.userslug -->
-									<!-- ENDIF !posts.selfPost -->
-
-									<button component="post/quote" class="btn btn-sm btn-link <!-- IF !privileges.topics:reply -->hidden<!--ENDIF !privileges.topics:reply -->" type="button" title="[[topic:quote]]"><i class="fa fa-quote-left"></i><span class="hidden-xs-inline"> [[topic:quote]]</span></button>
-									<button component="post/reply" class="btn btn-sm btn-link <!-- IF !privileges.topics:reply -->hidden<!--ENDIF !privileges.topics:reply -->" type="button"><i class="fa fa-reply"></i><span class="hidden-xs-inline"> [[topic:reply]]</span></button>
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
 			</li>
 
 			<!-- IF !posts.index -->
-			<div class="post-bar" data-index="{posts.index}">
-<div class="inline-block">
-
-	<span class="tags">
+			<li class="post-bar" data-index="{posts.index}">
+<span class="tags">
 	<!-- BEGIN tags -->
-	<a href="{config.relative_path}/tags/{tags.value}"><span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span><span class="tag-topic-count">{tags.score}</span></a>
+	<a href="{config.relative_path}/tags/{tags.value}">
+	<span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span>
+	<span class="tag-topic-count human-readable-number" title="{tags.score}">{tags.score}</span></a>
 	<!-- END tags -->
-	</span>
+</span>
 
-	<!-- IF tags.length -->
-	<span>|</span>
-	<!-- ENDIF tags.length -->
-
-	<small class="topic-stats">
-		<span>[[global:posts]]</span>
-		<strong><span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span></strong> |
-		<span>[[global:views]]</span>
-		<strong><span class="human-readable-number" title="{viewcount}">{viewcount}</span></strong>
-	</small>
-	<span class="browsing-users hidden">
-		&bull;
-		<small><span>[[category:browsing]]</span></small>
-		<div component="topic/browsing/list" class="thread_active_users active-users inline-block"></div>
-		<small class="hidden">
-			<i class="fa fa-users"></i> <span component="topic/browsing/count" class="user-count"></span>
-		</small>
-	</span>
-</div>
-
-<div class="topic-main-buttons pull-right inline-block">
-	<div class="loading-indicator" done="0" style="display:none;">
+<div class="topic-main-buttons pull-right">
+	<span class="loading-indicator btn pull-left hidden" done="0">
 		<span class="hidden-xs">[[topic:loading_more_posts]]</span> <i class="fa fa-refresh fa-spin"></i>
+	</span>
+
+	<div class="stats">
+		<span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span><br />
+		<small>[[global:posts]]</small>
+	</div>
+	<div class="stats">
+		<span class="human-readable-number" title="{viewcount}">{viewcount}</span><br />
+		<small>[[global:views]]</small>
 	</div>
 
 
 
-<a component="topic/reply" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
+
+<a component="topic/reply" href="#" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
 
 <!-- IF loggedIn -->
 
@@ -260,21 +256,14 @@
 
 
 
-<!-- IF loggedIn -->
-<div class="btn-group dropup" component="thread/sort">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:sort_by]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
-		<li><a href="#" class="oldest_to_newest" data-sort="oldest_to_newest"><i class="fa fa-fw"></i> [[topic:oldest_to_newest]]</a></li>
-		<li><a href="#" class="newest_to_oldest" data-sort="newest_to_oldest"><i class="fa fa-fw"></i> [[topic:newest_to_oldest]]</a></li>
-		<li><a href="#" class="most_votes" data-sort="most_votes"><i class="fa fa-fw"></i> [[topic:most_votes]]</a></li>
-	</ul>
-</div>
-<!-- ENDIF loggedIn -->
-
 <!-- IF privileges.view_thread_tools -->
-<div class="btn-group thread-tools dropup">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:thread_tools.title]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
+<div class="btn-group thread-tools">
+	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+		<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[topic:thread_tools.title]]</span>
+		<span class="visible-xs-inline"><i class="fa fa-fw fa-gear"></i></span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu dropdown-menu-right">
 		<!-- IF privileges.editable -->
 		<li>
 			<a component="topic/mark-unread-for-all" href="#">
@@ -302,7 +291,6 @@
 			</a>
 		</li>
 		<li class="divider"></li>
-
 		<li>
 			<a component="topic/move" href="#">
 				<i class="fa fa-fw fa-arrows"></i> [[topic:thread_tools.move]]
@@ -343,49 +331,41 @@
 </div>
 <!-- ENDIF privileges.view_thread_tools -->
 </div>
-<div style="clear:both;"></div>
-			</div>
+<div class="clearfix"></div>
+
+<hr />
+			</li>
 			<!-- ENDIF !posts.index -->
 		<!-- END posts -->
 	</ul>
 
-	<div class="post-bar col-xs-12 <!-- IF unreplied -->hidden<!-- ENDIF unreplied --> bottom-post-bar">
-<div class="inline-block">
-
-	<span class="tags">
+	<div class="post-bar bottom-post-bar <!-- IF unreplied -->hidden<!-- ENDIF unreplied -->">
+<span class="tags">
 	<!-- BEGIN tags -->
-	<a href="{config.relative_path}/tags/{tags.value}"><span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span><span class="tag-topic-count">{tags.score}</span></a>
+	<a href="{config.relative_path}/tags/{tags.value}">
+	<span class="tag-item" data-tag="{tags.value}" style="<!-- IF tags.color -->color: {tags.color};<!-- ENDIF tags.color --><!-- IF tags.bgColor -->background-color: {tags.bgColor};<!-- ENDIF tags.bgColor -->">{tags.value}</span>
+	<span class="tag-topic-count human-readable-number" title="{tags.score}">{tags.score}</span></a>
 	<!-- END tags -->
-	</span>
+</span>
 
-	<!-- IF tags.length -->
-	<span>|</span>
-	<!-- ENDIF tags.length -->
-
-	<small class="topic-stats">
-		<span>[[global:posts]]</span>
-		<strong><span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span></strong> |
-		<span>[[global:views]]</span>
-		<strong><span class="human-readable-number" title="{viewcount}">{viewcount}</span></strong>
-	</small>
-	<span class="browsing-users hidden">
-		&bull;
-		<small><span>[[category:browsing]]</span></small>
-		<div component="topic/browsing/list" class="thread_active_users active-users inline-block"></div>
-		<small class="hidden">
-			<i class="fa fa-users"></i> <span component="topic/browsing/count" class="user-count"></span>
-		</small>
-	</span>
-</div>
-
-<div class="topic-main-buttons pull-right inline-block">
-	<div class="loading-indicator" done="0" style="display:none;">
+<div class="topic-main-buttons pull-right">
+	<span class="loading-indicator btn pull-left hidden" done="0">
 		<span class="hidden-xs">[[topic:loading_more_posts]]</span> <i class="fa fa-refresh fa-spin"></i>
+	</span>
+
+	<div class="stats">
+		<span component="topic/post-count" class="human-readable-number" title="{postcount}">{postcount}</span><br />
+		<small>[[global:posts]]</small>
+	</div>
+	<div class="stats">
+		<span class="human-readable-number" title="{viewcount}">{viewcount}</span><br />
+		<small>[[global:views]]</small>
 	</div>
 
 
 
-<a component="topic/reply" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
+
+<a component="topic/reply" href="#" class="btn btn-primary <!-- IF !privileges.topics:reply -->hidden<!-- ENDIF !privileges.topics:reply -->">[[topic:reply]]</a>
 
 <!-- IF loggedIn -->
 
@@ -410,21 +390,14 @@
 
 
 
-<!-- IF loggedIn -->
-<div class="btn-group dropup" component="thread/sort">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:sort_by]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
-		<li><a href="#" class="oldest_to_newest" data-sort="oldest_to_newest"><i class="fa fa-fw"></i> [[topic:oldest_to_newest]]</a></li>
-		<li><a href="#" class="newest_to_oldest" data-sort="newest_to_oldest"><i class="fa fa-fw"></i> [[topic:newest_to_oldest]]</a></li>
-		<li><a href="#" class="most_votes" data-sort="most_votes"><i class="fa fa-fw"></i> [[topic:most_votes]]</a></li>
-	</ul>
-</div>
-<!-- ENDIF loggedIn -->
-
 <!-- IF privileges.view_thread_tools -->
-<div class="btn-group thread-tools dropup">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:thread_tools.title]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
+<div class="btn-group thread-tools">
+	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+		<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[topic:thread_tools.title]]</span>
+		<span class="visible-xs-inline"><i class="fa fa-fw fa-gear"></i></span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu dropdown-menu-right">
 		<!-- IF privileges.editable -->
 		<li>
 			<a component="topic/mark-unread-for-all" href="#">
@@ -452,7 +425,6 @@
 			</a>
 		</li>
 		<li class="divider"></li>
-
 		<li>
 			<a component="topic/move" href="#">
 				<i class="fa fa-fw fa-arrows"></i> [[topic:thread_tools.move]]
@@ -493,7 +465,9 @@
 </div>
 <!-- ENDIF privileges.view_thread_tools -->
 </div>
-<div style="clear:both;"></div>
+<div class="clearfix"></div>
+
+<hr />
 	</div>
 
 	<!-- IF config.usePagination -->
@@ -536,7 +510,7 @@
 				<p>
 					[[topic:disabled_categories_note]]
 				</p>
-				<div id="move-confirm" style="display: none;">
+				<div id="move-confirm" class="hidden">
 					<hr />
 					<div class="alert alert-info">[[topic:topic_will_be_moved_to]] <strong><span id="confirm-category-name"></span></strong></div>
 				</div>
@@ -624,3 +598,14 @@
 </noscript>
 <!-- ENDIF !config.usePagination -->
 
+<input type="hidden" template-variable="topic_id" value="{tid}" />
+<input type="hidden" template-variable="topic_slug" value="{slug}" />
+<input type="hidden" template-variable="category_id" value="{category.cid}" />
+<input type="hidden" template-variable="currentPage" value="{currentPage}" />
+<input type="hidden" template-variable="pageCount" value="{pageCount}" />
+<input type="hidden" template-variable="locked" template-type="boolean" value="{locked}" />
+<input type="hidden" template-variable="deleted" template-type="boolean" value="{deleted}" />
+<input type="hidden" template-variable="pinned" template-type="boolean" value="{pinned}" />
+<input type="hidden" template-variable="topic_name" value="{title}" />
+<input type="hidden" template-variable="postcount" value="{postcount}" />
+<input type="hidden" template-variable="viewcount" value="{viewcount}" />

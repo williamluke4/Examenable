@@ -7,7 +7,7 @@
 				</div>
 				<div class="modal-body">
 					<div id="gravatar-box">
-						<img id="user-gravatar-picture" src="" class="img-thumbnail user-profile-picture">
+						<img id="user-gravatar-picture" src="" class="user-profile-picture">
 						<span class="user-picture-label">[[user:gravatar]]</span>
 						<i class='fa fa-check fa-2x'></i>
 					</div>
@@ -15,7 +15,7 @@
 
 					<!-- IF config.allowProfileImageUploads -->
 					<div id="uploaded-box">
-						<img id="user-uploaded-picture" src="" class="img-thumbnail user-profile-picture">
+						<img id="user-uploaded-picture" src="" class="user-profile-picture">
 						<span class="user-picture-label">[[user:uploaded_picture]]</span>
 						<i class='fa fa-check fa-2x'></i>
 					</div>

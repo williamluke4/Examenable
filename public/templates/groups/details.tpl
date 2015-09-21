@@ -35,7 +35,7 @@
 			</div>
 			<div class="panel-body">
 				<input class="form-control" type="text" component="groups/members/search" placeholder="[[global:search]]"/><br/>
-				<table component="groups/members" class="table table-striped table-hover">
+				<table component="groups/members" class="table table-striped table-hover" data-nextstart="{group.membersNextStart}">
 					<!-- BEGIN members -->
 					<tr data-uid="{group.members.uid}">
 						<td>
@@ -175,20 +175,20 @@
 						<label for="name">[[groups:details.description]]</label>
 						<textarea class="form-control" name="description" id="description" type="text">{group.description}</textarea>
 					</div>
-					<div class="form-group">
+					<div class="form-group user-title-option">
 						<label for="userTitle">[[groups:details.badge_text]]</label>
 						<input component="groups/userTitleOption" class="form-control" name="userTitle" id="userTitle" type="text" value="{group.userTitle}"<!-- IF !group.userTitleEnabled --> disabled<!-- ENDIF !group.userTitleEnabled --> />
 					</div>
-					<div class="form-group">
-						<label>[[groups:details.badge_preview]]</label><br />
 
+					<div class="form-group user-title-option">
+						<label>[[groups:details.badge_preview]]</label><br />
 						<span class="label<!-- IF !group.userTitleEnabled --> hide<!-- ENDIF !group.userTitleEnabled -->" style="background-color: {group.labelColor}"><i class="fa {group.icon} icon"></i> <!-- IF group.userTitle -->{group.userTitle}<!-- ELSE -->{group.displayName}<!-- ENDIF group.userTitle --></span>
 
 						<button component="groups/userTitleOption" type="button" class="btn btn-default btn-sm" data-action="icon-select"<!-- IF !group.userTitleEnabled --> disabled<!-- ENDIF !group.userTitleEnabled -->>[[groups:details.change_icon]]</button>
 						<button component="groups/userTitleOption" type="button" class="btn btn-default btn-sm" data-action="color-select"<!-- IF !group.userTitleEnabled --> disabled<!-- ENDIF !group.userTitleEnabled -->>[[groups:details.change_colour]]</button>
 						<input type="hidden" name="labelColor" value="<!-- IF group.labelColor -->{group.labelColor}<!-- ENDIF group.labelColor -->" />
 						<input type="hidden" name="icon" value="<!-- IF group.icon -->{group.icon}<!-- ENDIF group.icon -->" />
-						<div id="icons" style="display:none;">
+						<div id="icons" class="hidden">
 							<div class="icon-container">
 								<div class="row fa-icons">
 									<i class="fa fa-doesnt-exist"></i>
@@ -231,6 +231,7 @@
 			</div>
 		</div>
 		<!-- ENDIF group.isOwner -->
+
 		<div>
 			<!-- IF !posts.length -->
 			<div class="alert alert-info">[[groups:details.has_no_posts]]</div>

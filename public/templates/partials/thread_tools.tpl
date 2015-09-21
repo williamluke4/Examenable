@@ -1,7 +1,11 @@
 <!-- IF privileges.view_thread_tools -->
-<div class="btn-group thread-tools dropup">
-	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">[[topic:thread_tools.title]] <span class="caret"></span></button>
-	<ul class="dropdown-menu pull-right">
+<div class="btn-group thread-tools">
+	<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+		<span class="visible-sm-inline visible-md-inline visible-lg-inline">[[topic:thread_tools.title]]</span>
+		<span class="visible-xs-inline"><i class="fa fa-fw fa-gear"></i></span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu dropdown-menu-right">
 		<!-- IF privileges.editable -->
 		<li>
 			<a component="topic/mark-unread-for-all" href="#">
@@ -29,7 +33,6 @@
 			</a>
 		</li>
 		<li class="divider"></li>
-
 		<li>
 			<a component="topic/move" href="#">
 				<i class="fa fa-fw fa-arrows"></i> [[topic:thread_tools.move]]

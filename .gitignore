@@ -13,7 +13,7 @@ provision.sh
 *.komodoproject
 .DS_Store
 feeds/recent.rss
-
+node_modules
 logs/
 
 pidfile
